@@ -1,0 +1,16 @@
+groups:
+  - name: ekyc-alerts
+    rules:
+      - alert: HighEkycErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{job="mock-ekyc-api",status=~"5.."}[5m]))
+            /
+            sum(rate(http_requests_total{job="mock-ekyc-api"}[5m]))
+          ) * 100 > 5
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "High eKYC API error rate detected"
+          description: "Mock eKYC API in namespace {{ $labels.namespace }} has exceeded 5% 5xx errors for more than 2 minutes."

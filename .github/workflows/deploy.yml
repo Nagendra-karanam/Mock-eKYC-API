@@ -1,35 +1,35 @@
-name ci-cd pipeline
+name: ci-cd pipeline
 
 on:
   push:
-     branches:
-        -main
+    branches:
+      - main
 
-jobs
-  build-scan-push-deploy
-    runs-on:ubuntu latest
+jobs:
+  build-scan-push-deploy:
+    runs-on: ubuntu-latest
 
-     steps:
-         -name: checkout code
-           uses : actions/checkout@v4
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
 
-          -name: Build Docker  Image
-            run: docker build -t mock-ekyc-api
+      - name: Build Docker Image
+        run: docker build -t mock-ekyc-api .
 
-          -name: Mock Security Scan
-            run: echo echo "Running in TrivyScan"
+      - name: Mock Security Scan
+        run: echo "Running TrivyScan"
 
-           -name: Login to Registry
-             run: echo "${{secrets.DCOKER_PASSWORD"}}" | docker login-u "${{secret.Docker_USERNAME}}" --password-stdin
+      - name: Login to Registry
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-            -name: Tag Image
-             run: docker push username/mock-ekyc-api:latest
+      - name: Tag Image
+        run: docker tag mock-ekyc-api ${{ secrets.DOCKER_USERNAME }}/mock-ekyc-api:latest
 
-            -name: Push Image
-              run: docker push username/mock-ekyc-api:latest
+      - name: Push Image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/mock-ekyc-api:latest
 
-           -name: Configure Kubeconfig
-             run: echo"${{ secerts.KUBECONFIG }}" >  kubeconfig
+      - name: Configure Kubeconfig
+        run: echo "${{ secrets.KUBECONFIG }}" > kubeconfig
 
-           -name: Deploy to kubernetes
-              run: kubectl --kubeconfig=kubeconfig set image deployment/mock-ekyc mock-ekyc=username/mock-ekyc-api:latest -n startup-namespace
+      - name: Deploy to Kubernetes
+        run: kubectl --kubeconfig=kubeconfig set image deployment/mock-ekyc mock-ekyc=${{ secrets.DOCKER_USERNAME }}/mock-ekyc-api:latest -n startup-namespace

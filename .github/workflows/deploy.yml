@@ -28,16 +28,5 @@ jobs:
       - name: Push Image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/mock-ekyc-api:latest
 
-      - name: Configure Kubeconfig
-        shell: bash
-        run: |
-          if [[ "${{ secrets.KUBECONFIG }}" == apiVersion:* ]]; then
-            printf '%s' "${{ secrets.KUBECONFIG }}" > kubeconfig
-          else
-            printf '%s' "${{ secrets.KUBECONFIG }}" | base64 --decode > kubeconfig
-          fi
-
-          test -s kubeconfig
-
       - name: Deploy to kubernetes
         run: echo "Mock deployment to startup-namespace completed successfully"

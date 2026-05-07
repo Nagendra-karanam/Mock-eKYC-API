@@ -1,3 +1,24 @@
-/.codex
-/__pycache__
-/venv
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv/
+.venv/
+
+# Environment Variables
+.env
+
+# Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+
+# codex
+codex/

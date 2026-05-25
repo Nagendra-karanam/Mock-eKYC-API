@@ -20,5 +20,3 @@ terraform.tfstate.backup
 # OS files
 .DS_Store
 
-# codex
-codex/

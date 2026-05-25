@@ -1,6 +1,9 @@
-FROM python:3.11-slim AS builder
+FROM python:3.11.9-slim AS builder
 
 WORKDIR /app
+
+LABEL maintainer="Nagnedra"
+LABEL project="mock-ekyc-api"
 
 # install build dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -14,7 +17,7 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 #--- stage 2 production image ---
-FROM python:3.11-slim
+FROM python:3.11.9-slim
 
 WORKDIR /app
 
@@ -39,7 +42,8 @@ USER appuser
 EXPOSE 5000
 
 # healthcheck
-HEALTHCHECK CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000/health').read()" || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')" || exit 1
 
 # start application
 CMD ["python", "app.py"]

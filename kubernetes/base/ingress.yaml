@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+
+metadata:
+  name: mock-ekyc-ingress
+  namespace: startup-tenant-alpha
+
+spec:
+  ingressClassName: nginx
+
+  rules:
+  - host: mock-ekyc.local
+
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+
+        backend:
+          service:
+            name: mock-ekyc-service
+            port:
+              number: 80

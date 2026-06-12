@@ -1,0 +1,7 @@
+replicas:2
+
+ strategy:
+    type: Rollingupdate
+    Rollingupdate:
+      maxUnavalible:0
+      maxsurge:1

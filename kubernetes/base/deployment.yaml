@@ -31,7 +31,7 @@ spec:
 
       containers:
       - name: mock-ekyc-api
-        image: nagendrasai2026/mock-ekyc-api:v1
+        image: nagendrasai2026/mock-ekyc-api:v2
         imagePullPolicy: Always
 
         ports:

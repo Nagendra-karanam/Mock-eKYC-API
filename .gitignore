@@ -16,7 +16,3 @@ terraform.tfstate.backup
 
 # VS Code
 .vscode/
-
-# OS files
-.DS_Store
-
